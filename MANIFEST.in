@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include pav_bsc *.css
+recursive-include pav_bsc *.csv
+recursive-include pav_bsc *.html
+recursive-include pav_bsc *.ico
+recursive-include pav_bsc *.js
+recursive-include pav_bsc *.json
+recursive-include pav_bsc *.md
+recursive-include pav_bsc *.png
+recursive-include pav_bsc *.py
+recursive-include pav_bsc *.svg
+recursive-include pav_bsc *.txt
+recursive-exclude pav_bsc *.pyc
