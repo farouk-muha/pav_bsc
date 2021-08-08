@@ -48,6 +48,7 @@
   {
    "fieldname": "type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Type",
    "options": "Plan\nPerspective\nObjective\nMeasure\nLink",
    "reqd": 1
@@ -185,7 +186,7 @@
   }
  ],
  "is_tree": 1,
- "modified": "2021-08-07 13:03:57.862003",
+ "modified": "2021-08-08 11:41:21.406446",
  "modified_by": "Administrator",
  "module": "PAV BSC",
  "name": "Scorecard",

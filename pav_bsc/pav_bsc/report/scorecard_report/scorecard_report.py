@@ -15,7 +15,7 @@ def execute(filters=None):
 	return columns, data
 
 def get_data(filters):
-	scorecard = frappe.db.sql("""SELECT s.name, s.scorecard_name, type, s.describe, s.parent_scorecard, s.weight, 
+	scorecard = frappe.db.sql("""SELECT s.name, s.scorecard_name, type, s.describe, s.parent_scorecard, s.weight, s.data_type,
 	l.scorecard, l.calendar, l.date, l.actual, l.red_flag, l.goal, l.score
 	FROM `tabScorecard` s
 	LEFT JOIN `tabScorecard Log` l on s.name = l.scorecard and l.date between %(from_date)s and %(to_date)s
@@ -38,6 +38,7 @@ def get_data(filters):
 			alltree[count]['weight']=plan.weight
 			alltree[count]['calendar']=plan.calendar
 			alltree[count]['date']=plan.date
+			alltree[count]['data_type']=plan.data_type
 			alltree[count]['actual']=0
 			alltree[count]['red_flag']=0
 			alltree[count]['goal']=0
@@ -61,6 +62,7 @@ def get_data(filters):
 				alltree[count]['weight']=per.weight
 				alltree[count]['calendar']=per.calendar
 				alltree[count]['date']=per.date
+				alltree[count]['data_type']=plan.data_type
 				alltree[count]['actual']=0
 				alltree[count]['red_flag']=0
 				alltree[count]['goal']=0
@@ -87,6 +89,7 @@ def get_data(filters):
 					alltree[count]['weight']=obj.weight
 					alltree[count]['calendar']=obj.calendar
 					alltree[count]['date']=obj.date
+					alltree[count]['data_type']=plan.data_type
 					alltree[count]['actual']=0
 					alltree[count]['red_flag']=0
 					alltree[count]['goal']=0
@@ -112,10 +115,11 @@ def get_data(filters):
 						alltree[count]['weight']=meas.weight
 						alltree[count]['calendar']=meas.calendar
 						alltree[count]['date']=meas.date
-						alltree[count]['actual']=meas.actual
-						alltree[count]['red_flag']=meas.red_flag
-						alltree[count]['goal']=meas.goal
-						alltree[count]['score']=meas.score
+						alltree[count]['data_type']=plan.data_type
+						alltree[count]['actual']=meas.actual if meas.actual else 0
+						alltree[count]['red_flag']=meas.red_flag if meas.red_flag else 0
+						alltree[count]['goal']=meas.goal if meas.goal else 0
+						alltree[count]['score']=meas.score if meas.score else 0
 						alltree[count]['parent']=obj.name
 						alltree[count]['indent']=3
 					else:
@@ -169,6 +173,7 @@ def get_data(filters):
 			"describe": tree.get('describe',''),
 			"calendar": tree.get('calendar',''),
 			"date": tree.get('date',''),
+			"data_type": tree.get('data_type',''),
 			"weight": tree.get('weight',''),
 			"actual": tree.get('actual',''),
 			"red_flag": tree.get('red_flag',''),
@@ -191,64 +196,68 @@ def get_columns():
 		},
 		{
 			"fieldname": "scorecard_name",
-			"label": _("scorecard_name"),
+			"label": _("Scorecard Name"),
 			"fieldtype": "Data",
 			"width": 100
 		},
 		{
 			"fieldname": "type",
-			"label": _("type"),
+			"label": _("Type"),
 			"fieldtype": "Data",
 			"width": 100
 		},
 		{
 			"fieldname": "describe",
-			"label": _("describe"),
+			"label": _("Describtion"),
 			"fieldtype": "Data",
 			"width": 100
 		},
 		{
 			"fieldname": "calendar",
-			"label": _("calendar"),
+			"label": _("Calendar"),
 			"fieldtype": "Data",
 			"width": 100
 		},
 		{
 			"fieldname": "date",
-			"label": _("date"),
+			"label": _("Date"),
 			"fieldtype": "Date",
 			"width": 100
 		},
-				{
+		{
 			"fieldname": "weight",
-			"label": _("weight"),
+			"label": _("Weight"),
 			"fieldtype": "Float",
 			"width": 100
 		},
 		{
+			"fieldname": "data_type",
+			"label": _("Data Type"),
+			"fieldtype": "Data",
+			"width": 100
+		},
+		{
 			"fieldname": "actual",
-			"label": _("actual"),
-			"fieldtype": "Currency",
+			"label": _("Actual"),
+			"fieldtype": "Float",
 			"width": 100
 		},
 		{
 			"fieldname": "red_flag",
-			"label": _("red_flag"),
-			"fieldtype": "Currency",
+			"label": _("Red Flag"),
+			"fieldtype": "Float",
 			"width": 100
 		},
 		{
 			"fieldname": "goal",
-			"label": _("goal"),
+			"label": _("Goal"),
 			"fieldtype": "Float",
 			"width": 100
 		},
 				{
 			"fieldname": "score",
-			"label": _("score"),
-			"fieldtype": "Currency",
+			"label": _("Score"),
+			"fieldtype": "Float",
 			"width": 100
 		},
 	]
-
-

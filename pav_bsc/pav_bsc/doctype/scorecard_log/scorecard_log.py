@@ -15,6 +15,6 @@ class ScorecardLog(Document):
 		from datetime import datetime
 		date = datetime.strptime(self.date, '%Y-%m-%d')
 		log = frappe.db.sql("""select name, date from `tabScorecard Log`
-		WHERE scorecard =  %s and MONTH(date) = %s  and YEAR(date) = %s""",(self.scorecard, date.month, date.year))
+		WHERE name != %s and scorecard = %s and MONTH(date) = %s  and YEAR(date) = %s""",(self.name, self.scorecard, date.month, date.year))
 		if log:
 				frappe.throw(_("There is log for the same scorecard and date!"))
